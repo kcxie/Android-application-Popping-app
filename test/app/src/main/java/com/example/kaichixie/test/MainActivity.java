@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         final SeekBar pg=(SeekBar)findViewById(R.id.progressbar);
 
         pg.setMax(mp.getDuration());
+        pg.setScaleY(4f);
         pg.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
