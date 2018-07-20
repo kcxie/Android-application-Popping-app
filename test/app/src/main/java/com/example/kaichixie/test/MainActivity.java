@@ -55,22 +55,18 @@ class Markpos extends View{
 public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mp;
-    boolean clk=false;
-    boolean setted;
     Button Markbutton=null;
     ConstraintLayout mymainlayout;
     View thumb;
-    SeekBar change1;
+
+
     public void play(View view) {
         mp.start();
     }
-
     public void pause(View view) {
         mp.pause();
     }
-    public void second(View view){
-        clk=true;
-    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -81,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
 
         mymainlayout= findViewById(R.id.mymainlayout);
 
-      /* mp=MediaPlayer.create(this, R.raw.blackspiderman);*/
-       String requestURL=Uri.encode("https://s3.us-east-2.amazonaws.com/appsongs/simple+(prod.+Frith).mp3","UTF-8").replaceAll("\\+", "%20")
+       mp=MediaPlayer.create(this, R.raw.blackspiderman);
+       /*String requestURL=Uri.encode("https://s3.us-east-2.amazonaws.com/appsongs/simple+(prod.+Frith).mp3","UTF-8").replaceAll("\\+", "%20")
                 .replaceAll("\\%21", "!")
                 .replaceAll("\\%27", "'")
                 .replaceAll("\\%28", "(")
                 .replaceAll("\\%29", ")")
                 .replaceAll("\\%7E", "~");
-      /* String requestURL = String.format("https://s3.us-east-2.amazonaws.com/appsongs/simple+(prod.+Frith).mp3", Uri.encode("foo bar"), Uri.encode("100% fubar'd"));*/
+      /* String requestURL = String.format("https://s3.us-east-2.amazonaws.com/appsongs/simple+(prod.+Frith).mp3", Uri.encode("foo bar"), Uri.encode("100% fubar'd"));
         Uri onlinesong=Uri.parse(requestURL);
         onlinesong.getPath();
 
@@ -100,18 +96,23 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
+        }*/
 
         /*mp=MediaPlayer.create(this, "https://s3.us-east-2.amazonaws.com/appsongs/Childish+Gambino+-+This+Is+America+(LYRICS)+HD.mp3");*/
+
+
+        /*The comments above are attempts to connect URI from AWS*/
+
         final SeekBar pg= findViewById(R.id.progressBar1);
         Markbutton= findViewById(R.id.Mark);
-        final Markpos arr_marks[]= new Markpos[100];
-        final int loop_time[]=new int[2];
+        final Markpos arr_marks[]= new Markpos[100]; /*This can include 100 marks we want in a song. But for now, we only use the first two for one loop*/
+        final int loop_time[]=new int[2]; /*To record the time range for the loop */
         loop_time[0]=0;
         loop_time[1]=0;
         mymainlayout= findViewById(R.id.mymainlayout);
         loopbutton= findViewById(R.id.loop);
+
+        /*This listener gets the song ready for playing*/
 
         mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -122,14 +123,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
         pg.setOnSeekBarChangeListener
                 (new SeekBar.OnSeekBarChangeListener() {
-                    private int move;
-            @Override
 
+            @Override
+        /*Boolean b is "from user", the version before it calls seekTo(i) every millisecond the song goes. To match the dragging thumb functionality and playing the song smoothly,
+         * we only call seekTo() when it is a change from the user */
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
                 if(b==true){
@@ -141,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                    move=seekBar.getProgress();
 
             }
 
@@ -149,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-
 
                 });
 
@@ -159,9 +156,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.i("count",Integer.toString(count));
-
-
+                /*Below, it is calculation for the x-axis of the thumb position*/
                 int width = pg.getWidth()
                         - pg.getPaddingLeft()
                         - pg.getPaddingRight();
@@ -171,27 +166,18 @@ public class MainActivity extends AppCompatActivity {
                         * pg.getProgress()
                         / pg.getMax();
 
-               /* Log.i("x", Integer.toString(x));
-                Log.i("y",Integer.toString(y));*/
+                /*Every time we create a markpos object, itself calls onDraw()*/
                arr_marks[count]=new Markpos(MainActivity.this,thumbPos,height);
+               /*Record the first range*/
                if(count<2){
                loop_time[count]=mp.getCurrentPosition();
-                   Log.i("inside",Integer.toString(loop_time[count]));
 
                }
-               mymainlayout.addView(arr_marks[count]);
-               Log.i("x",Integer.toString(arr_marks[count].x));
+
+               mymainlayout.addView(arr_marks[count]);/*This is called so the view can be put on the actual interface*/
+
                count=count+1;
-               /* arr_marks[count].x = thumbPos;
-                arr_marks[count].y = height;*/
 
-                /*multiplemark.x=thumbPos;
-                multiplemark.y=height;
-                multiplemark.invalidate();*/
-
-               /* Markpos test1 = new Markpos(MainActivity.this,test[0],test[1]);
-                mymainlayout=(ConstraintLayout) findViewById(R.id.mymainlayout);
-                mymainlayout.addView(multiplemark);*/
 
 
             }
@@ -200,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
         loopbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("ttt",Integer.toString(loop_time[0]));
-                pg.setProgress(loop_time[0]);
+
+                pg.setProgress(loop_time[0]); /*loop_time[0] is the time start for the loop*/
                 mp.seekTo(loop_time[0]);
 
             }
@@ -210,17 +196,13 @@ public class MainActivity extends AppCompatActivity {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Log.i("mpcurrent", Integer.toString(mp.getCurrentPosition()));
 
-                Log.i("a", Integer.toString(mp.getCurrentPosition()-mp.getCurrentPosition()%100));
-                Log.i("b", Integer.toString(loop_time[1]-(loop_time[1]%100)));
                 if(
                         ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)<=((loop_time[1]-(loop_time[1]%100))+50))&&
-
                                 //For some reason the "mp.getCurrentPosition()-mp.getCurrentPosition()%100" is slightly bigger or smaller than the result i expected sometimes, so I put a range here.
-
-                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)>=((loop_time[1]-(loop_time[1]%100))-50))
-                        ){
+                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)>=((loop_time[1]-(loop_time[1]%100))-50))&& (loop_time[1]!=0) /*MAKE Sure range is set up*/
+                        )
+                {
                     pg.setProgress(loop_time[0]);
                     mp.seekTo(loop_time[0]);
                 }
@@ -232,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-        }, 0, 100);
+        }, 0, 100);/*timer checks every 100 milisecond*/
 
 
     }
