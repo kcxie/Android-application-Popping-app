@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,78 +24,101 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="57dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="400dp"
         android:onClick="play"
         android:text="play"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="123dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="123dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="279dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="400dp"
         android:onClick="pause"
         android:text="pause"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/Mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="50dp"
-        android:onClick="second"
+        android:layout_marginBottom="39dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="300dp"
         android:text="Mark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/loop"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/progressBar1"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="18dp"
-
-
+        android:layout_height="wrap_content"
+        android:layout_marginTop="224dp"
         android:progressDrawable="@drawable/custom_progressbar"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="37dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/loop"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="130dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginLeft="101dp"
-        android:layout_marginRight="175dp"
-        android:layout_marginStart="101dp"
-        android:layout_marginTop="79dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="39dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="300dp"
         android:text="loop"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="449dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="576dp" />
+
+    <TextView
+        android:id="@+id/timeplayed"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="215dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeleft"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginTop="215dp"
+        android:text="00:00"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

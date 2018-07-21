@@ -17,11 +17,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,14 +32,15 @@ import java.util.TimerTask;
 import static android.view.MotionEvent.ACTION_DOWN;
 
 class Markpos extends View{
-     int x,y;
+     int x,y1,y2;
 
-    public Markpos(Context context,int a, int b) {
+    public Markpos(Context context,int a, int b1, int b2) {
         super(context);
         this.setWillNotDraw(false);
         Log.i("asdsadas","drawing");
         x=a;
-        y=b;
+        y1=b1;
+        y2=b2;
     }
 
      @Override
@@ -46,7 +50,7 @@ class Markpos extends View{
          ourblue.setStrokeWidth(15);
          ourblue.setColor(Color.rgb(139,139,0));
          super.onDraw(canvas);
-         canvas.drawLine(x,0,x,y,ourblue);
+         canvas.drawLine(x,y1,x,y2,ourblue);
 
      }
  }
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     Button Markbutton=null;
     ConstraintLayout mymainlayout;
     View thumb;
+    View location;
 
 
     public void play(View view) {
@@ -111,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         loop_time[1]=0;
         mymainlayout= findViewById(R.id.mymainlayout);
         loopbutton= findViewById(R.id.loop);
+        String pattern="mm:ss";
+        final SimpleDateFormat sdf=new SimpleDateFormat(pattern);
+        final int songduration=mp.getDuration();
 
         /*This listener gets the song ready for playing*/
 
@@ -119,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.start();
                 pg.setMax(mp.getDuration());
+
+
+
             }
         });
 
@@ -149,6 +160,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
                 });
+        final int pglocation[]=new int[2];
+        final int layoutlocation[]=new int[2];
+        location=(SeekBar)findViewById(R.id.progressBar1);
+        ViewTreeObserver axis=location.getViewTreeObserver();
+        axis.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mymainlayout.getLocationOnScreen(layoutlocation);
+
+                location.getLocationOnScreen(pglocation);
+                Log.i("x",Integer.toString(pglocation[0]));
+                Log.i("y",Integer.toString(pglocation[1]));
+            }
+        });
+
+
+
 
         Markbutton.setOnClickListener(new View.OnClickListener() {
 
@@ -157,17 +185,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 /*Below, it is calculation for the x-axis of the thumb position*/
+
                 int width = pg.getWidth()
                         - pg.getPaddingLeft()
                         - pg.getPaddingRight();
-                int height=pg.getHeight()+pg.getBaseline();
+                int height=pg.getHeight();
+                      //  ;+pg.getBaseline();
+
+
+
                 int thumbPos = pg.getPaddingLeft()
                         + width
                         * pg.getProgress()
                         / pg.getMax();
 
                 /*Every time we create a markpos object, itself calls onDraw()*/
-               arr_marks[count]=new Markpos(MainActivity.this,thumbPos,height);
+               arr_marks[count]=new Markpos(MainActivity.this,thumbPos,pglocation[1]-layoutlocation[1]-height,pglocation[1]-layoutlocation[1]);
                /*Record the first range*/
                if(count<2){
                loop_time[count]=mp.getCurrentPosition();
@@ -192,15 +225,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        final TextView timeplayed=(TextView) findViewById(R.id.timeplayed);
+        final TextView timeleft=(TextView) findViewById(R.id.timeleft);
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                String timepass;
+                String timeremain;
+                timepass=sdf.format(mp.getCurrentPosition());
+                timeremain=sdf.format(songduration-mp.getCurrentPosition());
+                timeplayed.setText(timepass);
+                timeleft.setText(timeremain);
 
                 if(
-                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)<=((loop_time[1]-(loop_time[1]%100))+50))&&
+                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)<=((loop_time[1]-(loop_time[1]%100))+15))&&
                                 //For some reason the "mp.getCurrentPosition()-mp.getCurrentPosition()%100" is slightly bigger or smaller than the result i expected sometimes, so I put a range here.
-                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)>=((loop_time[1]-(loop_time[1]%100))-50))&& (loop_time[1]!=0) /*MAKE Sure range is set up*/
+                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)>=((loop_time[1]-(loop_time[1]%100))-15))&& (loop_time[1]!=0) /*MAKE Sure range is set up*/
                         )
                 {
                     pg.setProgress(loop_time[0]);
