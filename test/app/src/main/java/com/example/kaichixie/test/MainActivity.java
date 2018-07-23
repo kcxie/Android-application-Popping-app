@@ -230,31 +230,32 @@ public class MainActivity extends AppCompatActivity {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                String timepass;
-                String timeremain;
-                timepass=sdf.format(mp.getCurrentPosition());
-                timeremain=sdf.format(songduration-mp.getCurrentPosition());
-                timeplayed.setText(timepass);
-                timeleft.setText(timeremain);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String timepass;
+                        String timeremain;
+                        timepass = sdf.format(mp.getCurrentPosition());
+                        timeremain = sdf.format(songduration - mp.getCurrentPosition());
+                        timeplayed.setText(timepass);
+                        timeleft.setText(timeremain);
 
-                if(
-                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)<=((loop_time[1]-(loop_time[1]%100))+15))&&
-                                //For some reason the "mp.getCurrentPosition()-mp.getCurrentPosition()%100" is slightly bigger or smaller than the result i expected sometimes, so I put a range here.
-                        ((mp.getCurrentPosition()-mp.getCurrentPosition()%100)>=((loop_time[1]-(loop_time[1]%100))-15))&& (loop_time[1]!=0) /*MAKE Sure range is set up*/
-                        )
-                {
-                    pg.setProgress(loop_time[0]);
-                    mp.seekTo(loop_time[0]);
-                }
+                        if (
+                                ((mp.getCurrentPosition() - mp.getCurrentPosition() % 100) <= ((loop_time[1] - (loop_time[1] % 100)) + 15)) &&
+                                        //For some reason the "mp.getCurrentPosition()-mp.getCurrentPosition()%100" is slightly bigger or smaller than the result i expected sometimes, so I put a range here.
+                                        ((mp.getCurrentPosition() - mp.getCurrentPosition() % 100) >= ((loop_time[1] - (loop_time[1] % 100)) - 15)) && (loop_time[1] != 0) /*MAKE Sure range is set up*/
+                                ) {
+                            pg.setProgress(loop_time[0]);
+                            mp.seekTo(loop_time[0]);
+                        } else {
 
-                else{
+                            pg.setProgress(mp.getCurrentPosition());
+                        }
 
-                        pg.setProgress(mp.getCurrentPosition());
-                    }
+                    };
+                });
 
-
-            }
-        }, 0, 100);/*timer checks every 100 milisecond*/
+        }},0, 100); /*timer checks every 100 milisecond*/
 
 
     }
