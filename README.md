@@ -7,12 +7,13 @@
 • Due to the characteristics of this Hip-hop dance community,it will have music shuffle-play mode with songs requested from online database and server (AWS). As a project still in process, It also will be added with features for displaying organization information and interactions among members.</p>
 
 <p>This application is in the process of building the major functionalities</p>
-<p>Now it perfectly plays any song in local PC</p>
+<p>Now it plays any song in local PC</p>
+<p>It sets multiple marks for any time position and has the looping features. </p>
 
   
 <img src="https://user-images.githubusercontent.com/33383546/43039519-e371399e-8ce3-11e8-82c7-4259100cfa09.jpeg" width="300" height="500"></img>
 
-<p>It sets multiple marks for any time position and has the looping features. </p>
+
 
 <img src="https://user-images.githubusercontent.com/33383546/43039553-9c9018aa-8ce4-11e8-86ce-3ddf9ad14610.jpeg" width="300" height="500"></img>
 
