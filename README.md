@@ -4,7 +4,7 @@
 •To solve the problem in making choreography for dancing communities, this application contains media player that can be selected multiple specific time ranges in one song. This media player can loop any one of the ranges accordingly. It aims to help choreographer narrow down their thoughts to certain part of a song chosen so that creating movements and repeating pratices are more convenient.</p>
 
 <p>
-• Due to the characteristics of this Hip-hopdancecommunity,it has musics huffle-play mode with songs requested from online database and server (AWS). As a project still in process, It also will be added with features for displaying organization information and interactions among members.</p>
+• Due to the characteristics of this Hip-hop dance community,it will have music shuffle-play mode with songs requested from online database and server (AWS). As a project still in process, It also will be added with features for displaying organization information and interactions among members.</p>
 
 <p>This application is in the process of building the major functionalities</p>
 <p>Now it perfectly plays any song in local PC</p>
