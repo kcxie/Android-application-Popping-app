@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PoppingAppBackend</string>
+    <string name="input_a_song">Input a song:</string>
+</resources>
